@@ -5,6 +5,7 @@ from roles.models import RolesModel
 from blocked_units.models.blocked_units import BlockedUnitsModel
 from blocked_units.models.passports import PassportsModel
 from company.models import CompanyModel
+from permissions.models import PermissionModel
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool

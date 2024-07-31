@@ -44,5 +44,3 @@ async def partial_update_user(user_id: int, request: UsersSchemaRequestPartial,
 
     user = await service.partial_update_user(request, user_id)
     return user
-
-

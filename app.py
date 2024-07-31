@@ -5,6 +5,7 @@ from roles.controllers import router as roles_router
 from company.controllers import router as company_router
 from permissions.controllers import router as permissions_router
 from users.controllers import router as users_router
+from blocked_units.controllers import router as blocked_units_router
 from db.seed_roles import seed_roles
 from db.seed_permissions import seed_permissions
 from db.session import async_session_maker
@@ -25,6 +26,7 @@ async def on_startup():
     app.include_router(company_router, prefix="/api/v1", tags=['CRUD по компаниям'])
     app.include_router(permissions_router, prefix="/api/v1", tags=['Permissions для пользователей'])
     app.include_router(users_router, prefix="/api/v1", tags=['CRUD по пользователям'])
+    app.include_router(blocked_units_router, prefix="/api/v1", tags=['CRUD по заблокированным пользователям'])
 
     async with async_session_maker() as session:
         await seed_roles(session)

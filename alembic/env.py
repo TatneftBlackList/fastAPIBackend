@@ -6,6 +6,8 @@ from blocked_units.models.blocked_units import BlockedUnitsModel
 from blocked_units.models.passports import PassportsModel
 from company.models import CompanyModel
 from permissions.models import PermissionModel
+from users.models.users_permission import UserPermissionModel
+from users.models.users import UserModel
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool

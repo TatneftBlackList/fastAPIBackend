@@ -8,6 +8,7 @@ from company.models import CompanyModel
 from permissions.models import PermissionModel
 from users.models.users_permission import UserPermissionModel
 from users.models.users import UserModel
+from logs.models import UserRequestLogModel
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool

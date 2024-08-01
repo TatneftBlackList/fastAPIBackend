@@ -17,5 +17,7 @@ class AuthModel(Base):
 
     user_rel = relationship('UserModel', back_populates='auth_rel')
     role_rel = relationship('RolesModel', back_populates='auth_rel')
+    request_logs = relationship('UserRequestLogModel', back_populates='user', cascade='all, delete-orphan')
+
 
 

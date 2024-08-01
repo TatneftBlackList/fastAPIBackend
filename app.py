@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from auth.controllers import router as auth_router
+from logs.middleware import UserRequestLogMiddleware
 from roles.controllers import router as roles_router
 from company.controllers import router as company_router
 from permissions.controllers import router as permissions_router
@@ -20,6 +21,7 @@ async def on_startup():
     from permissions.models import PermissionModel
     from users.models.users import UserModel
     from users.models.users_permission import UserPermissionModel
+    from logs.models import UserRequestLogModel
 
     app.include_router(auth_router, prefix="/api/v1", tags=['Авторизация и регистрация'])
     app.include_router(roles_router, prefix="/api/v1", tags=['Роли'])
@@ -42,3 +44,4 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(UserRequestLogMiddleware)

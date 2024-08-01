@@ -30,7 +30,8 @@ class AuthService:
         return user
 
     async def create_access_token_service(self, user: AuthModel):
-        token_data = {"sub": user.login}
+        permissions = await self.user_permission_repository.get_permissions_from_user(user)
+        token_data = {"sub": user.login, "permissions": [permission.name for permission in permissions]}
         return create_access_token(token_data)
 
     async def create_user(self, user: UserCreate):

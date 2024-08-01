@@ -34,4 +34,3 @@ class UsersRepository:
     async def delete_user(self, user: UserModel):
         await self.db.delete(user)
         await self.db.commit()
-

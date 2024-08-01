@@ -14,8 +14,7 @@ class UserRequestLogMiddleware(BaseHTTPMiddleware):
                 request.state.session = session
 
                 if not hasattr(request.state, 'user'):
-                    request.state.user = None  # Или установите в пользователя по умолчанию, если это необходимо
-
+                    request.state.user = None
                 response = await call_next(request)
 
                 user_id = request.state.user.id if request.state.user else None

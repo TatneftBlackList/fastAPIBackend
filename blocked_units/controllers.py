@@ -1,6 +1,7 @@
-from typing import List, Annotated
+from datetime import datetime
+from typing import List, Annotated, Optional
 from auth.dependencies import get_current_user
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
@@ -80,3 +81,24 @@ async def delete_blocked_units(blocked_unit_id: int,
 
     await service.delete_blocked_unit(blocked_unit_id, current_user)
 
+
+@router.get("/blockedUnits/search/blockedUnits", response_model=List[BlockedUnitSchemaResponse], summary="Поиск заблокированных пользователей")
+async def search_blocked_units(
+    current_user: Annotated[dict, Depends(get_current_user)],
+    session: AsyncSession = Depends(get_session),
+    fio: Optional[str] = Query(None, description="ФИО"),
+    passport_number: Optional[str] = Query(None, description="Номер паспорта"),
+    passport_seria: Optional[str] = Query(None, description="Серия паспорта"),
+    company_name: Optional[str] = Query(None, description="Название компании"),
+    reason: Optional[str] = Query(None, description="Причина"),
+):
+    service = BlockedUnitsService(session)
+    blocked_units = await service.search_blocked_units(
+        user=current_user,
+        fio=fio,
+        passport_number=passport_number,
+        passport_seria=passport_seria,
+        company_name=company_name,
+        reason=reason
+    )
+    return blocked_units

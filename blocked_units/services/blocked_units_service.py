@@ -1,3 +1,6 @@
+from datetime import datetime
+from typing import Optional, List
+
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
@@ -200,6 +203,28 @@ class BlockedUnitsService:
 
             await self.passports_repository.delete_passport(existing_blocked_units.passport_id)
             await self.blocked_units_repository.delete_blocked_units(existing_blocked_units)
+
+    async def search_blocked_units(
+        self,
+        user: dict,
+        fio: Optional[str] = None,
+        passport_number: Optional[str] = None,
+        passport_seria: Optional[str] = None,
+        company_name: Optional[str] = None,
+        reason: Optional[str] = None,
+    ) -> List[BlockedUnitSchemaResponse]:
+        if not await self.permission_verification.get_verification(user['permissions']):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Недостаточно прав")
+
+        units = await self.blocked_units_repository.search_blocked_units(
+            fio=fio,
+            passport_number=passport_number,
+            passport_seria=passport_seria,
+            company_name=company_name,
+            reason=reason
+        )
+
+        return [await self.__convert_to_schema(unit) for unit in units]
 
     async def __convert_to_schema(self, unit):
         blocked_unit = BlockedUnitSchemaResponse(

@@ -2,7 +2,7 @@ FROM python:3.10-slim-buster AS builder
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN pip install -r fastAPIBackend/requirements.txt
 
 COPY . .
 

@@ -1,11 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from fastapi import HTTPException
-
-from starlette import status
-
 from logs.models import UserRequestLogModel
-from users.models.users import UserModel
+
 
 
 class UserRequestLogRepository:

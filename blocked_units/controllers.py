@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
-from auth.models import AuthModel
 from db.session import get_session
 from blocked_units.schemas.blocked_units import (BlockedUnitSchemaResponse, BlockedUnitSchemaRequest,
                                                  BlockedUnitsSchemaPartialRequest)
@@ -19,7 +18,7 @@ router = APIRouter()
 async def get_blocked_units(current_user: Annotated[dict, Depends(get_current_user)],
                             session: AsyncSession = Depends(get_session)):
     service = BlockedUnitsService(session)
-    blocked_units = await service.get_blocked_units()
+    blocked_units = await service.get_blocked_units(current_user)
 
     return blocked_units
 
@@ -31,7 +30,7 @@ async def add_blocked_units(request: BlockedUnitSchemaRequest,
                             session: AsyncSession = Depends(get_session)):
     service = BlockedUnitsService(session)
 
-    new_blocked_units = await service.add_blocked_units(request)
+    new_blocked_units = await service.add_blocked_units(request, current_user)
 
     return new_blocked_units
 
@@ -43,7 +42,7 @@ async def get_blocked_unit(blocked_unit_id: int,
                            session: AsyncSession = Depends(get_session)):
     service = BlockedUnitsService(session)
 
-    blocked_unit = await service.get_unit_by_id(blocked_unit_id)
+    blocked_unit = await service.get_unit_by_id(blocked_unit_id, current_user)
 
     return blocked_unit
 
@@ -56,7 +55,7 @@ async def update_blocked_units(request: BlockedUnitSchemaRequest,
                                session: AsyncSession = Depends(get_session)):
     service = BlockedUnitsService(session)
 
-    update_unit = await service.update_blocked_units(request, blocked_unit_id)
+    update_unit = await service.update_blocked_units(request, blocked_unit_id, current_user)
 
     return update_unit
 
@@ -68,7 +67,7 @@ async def partial_blocked_unit(request: BlockedUnitsSchemaPartialRequest,
                                current_user: Annotated[dict, Depends(get_current_user)],
                                session: AsyncSession = Depends(get_session)):
     service = BlockedUnitsService(session)
-    updated_unit = await service.partial_update_blocked_unit(request, blocked_unit_id)
+    updated_unit = await service.partial_update_blocked_unit(request, blocked_unit_id, current_user)
     return updated_unit
 
 
@@ -79,5 +78,5 @@ async def delete_blocked_units(blocked_unit_id: int,
                                session: AsyncSession = Depends(get_session)):
     service = BlockedUnitsService(session)
 
-    await service.delete_blocked_unit(blocked_unit_id)
+    await service.delete_blocked_unit(blocked_unit_id, current_user)
 

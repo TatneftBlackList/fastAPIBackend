@@ -2,7 +2,6 @@ from typing import List, Annotated
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends
 from starlette import status
-
 from auth.dependencies import get_current_user
 from db.session import get_session
 from users.schemas import UsersSchemaResponse, UsersSchemaRequest, UsersSchemaRequestPartial
@@ -17,7 +16,7 @@ async def get_users(current_user: Annotated[dict, Depends(get_current_user)],
                     session: AsyncSession = Depends(get_session)):
     service = UserService(session)
 
-    users = await service.get_users()
+    users = await service.get_users(current_user)
     return users
 
 
@@ -28,7 +27,7 @@ async def get_user(user_id: int,
                    session: AsyncSession = Depends(get_session)):
     service = UserService(session)
 
-    user = await service.get_user(user_id)
+    user = await service.get_user(user_id, current_user)
     return user
 
 
@@ -40,7 +39,7 @@ async def update_user(user_id: int,
                       session: AsyncSession = Depends(get_session)):
     service = UserService(session)
 
-    user = await service.update_user(request, user_id)
+    user = await service.update_user(request, user_id, current_user)
     return user
 
 
@@ -52,7 +51,7 @@ async def partial_update_user(user_id: int,
                               session: AsyncSession = Depends(get_session)):
     service = UserService(session)
 
-    user = await service.partial_update_user(request, user_id)
+    user = await service.partial_update_user(request, user_id, current_user)
     return user
 
 
@@ -62,4 +61,4 @@ async def delete_user(user_id: int,
                       session: AsyncSession = Depends(get_session)):
     service = UserService(session)
 
-    await service.delete_user(user_id)
+    await service.delete_user(user_id, current_user)

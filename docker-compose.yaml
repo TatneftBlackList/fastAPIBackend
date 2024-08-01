@@ -1,0 +1,17 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      eip-net:
+        ipv4_address: 172.20.0.6
+
+
+volumes:
+  postgres_data:

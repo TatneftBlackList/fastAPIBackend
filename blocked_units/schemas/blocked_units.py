@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 from blocked_units.schemas.passports import PassportSchemaResponse, PassportSchemaRequest, PassportSchemaPartialRequest
-from company.schemas import CompanySchemaResponse, CompanySchemaRequest
+from company.schemas import CompanySchemaResponse
 from datetime import datetime
 
 

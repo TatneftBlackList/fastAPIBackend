@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Enum
+from sqlalchemy import Column, Integer, Enum
 from sqlalchemy.orm import relationship
 
 from permissions.enums import PermissionEnums

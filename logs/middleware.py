@@ -1,8 +1,7 @@
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
-from sqlalchemy.ext.asyncio import AsyncSession
-from db.session import get_session, async_session_maker
+from db.session import async_session_maker
 from logs.models import UserRequestLogModel
 
 

@@ -18,7 +18,7 @@ async def get_roles(current_user: Annotated[dict, Depends(get_current_user)],
                     session: AsyncSession = Depends(get_session)):
     service = RolesService(session)
 
-    roles = await service.get_all_roles()
+    roles = await service.get_all_roles(current_user)
 
     return roles
 

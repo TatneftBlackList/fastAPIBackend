@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
@@ -18,7 +18,7 @@ async def get_company(current_user: Annotated[dict, Depends(get_current_user)],
                       session: AsyncSession = Depends(get_session)):
     service = CompanyService(session)
 
-    company = await service.get_all_company()
+    company = await service.get_all_company(current_user)
 
     return company
 
@@ -30,7 +30,7 @@ async def add_company(request: CompanySchemaRequest,
                       session: AsyncSession = Depends(get_session)):
     service = CompanyService(session)
 
-    new_company = await service.create_company(request)
+    new_company = await service.create_company(request, current_user)
     return new_company
 
 
@@ -41,7 +41,7 @@ async def get_company(company_id: int,
                       session: AsyncSession = Depends(get_session)):
     service = CompanyService(session)
 
-    company = await service.get_company(company_id)
+    company = await service.get_company(company_id, current_user)
     return company
 
 
@@ -53,7 +53,7 @@ async def update_company(request: CompanySchemaRequest,
                          session: AsyncSession = Depends(get_session)):
     service = CompanyService(session)
 
-    company = await service.update_company(company_id, request)
+    company = await service.update_company(company_id, request, current_user)
     return company
 
 
@@ -63,5 +63,5 @@ async def delete_company(company_id: int,
                          session: AsyncSession = Depends(get_session)):
     service = CompanyService(session)
 
-    await service.delete_company(company_id)
+    await service.delete_company(company_id, current_user)
 

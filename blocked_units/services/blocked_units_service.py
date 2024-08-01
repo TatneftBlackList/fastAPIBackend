@@ -179,6 +179,19 @@ class BlockedUnitsService:
         return schema_blocked_unit
 
 
+    async def delete_blocked_unit(self, unit_id: int):
+        existing_blocked_units = await self.blocked_units_repository.get_blocked_unit(unit_id)
+
+        if existing_blocked_units is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Blocked Unit not found"
+            )
+
+        await self.passports_repository.delete_passport(existing_blocked_units.passport_id)
+        await self.blocked_units_repository.delete_blocked_units(existing_blocked_units)
+
+
     async def __convert_to_schema(self, unit):
         blocked_unit = BlockedUnitSchemaResponse(
             id=unit.id,

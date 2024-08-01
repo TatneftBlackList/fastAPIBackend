@@ -13,4 +13,7 @@ class PassportsModel(Base):
     old_passport_number = Column(String, nullable=True, unique=True)
     old_passport_seria = Column(String, nullable=True, unique=True)
 
-    blocked_units_rel = relationship('BlockedUnitsModel', back_populates='passports_rel')
+    blocked_units_rel = relationship('BlockedUnitsModel',
+                                     back_populates='passports_rel',
+                                     cascade='all, delete-orphan',
+                                     passive_deletes=True)

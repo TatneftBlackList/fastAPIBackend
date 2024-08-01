@@ -12,6 +12,13 @@ class UserModel(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
 
-    user_permissions_rel = relationship('UserPermissionModel', back_populates='user_rel')
-    auth_rel = relationship('AuthModel', uselist=False, back_populates='user_rel')
+    user_permissions_rel = relationship('UserPermissionModel',
+                                        back_populates='user_rel',
+                                        passive_deletes=True,
+                                        cascade='all, delete-orphan')
+    auth_rel = relationship('AuthModel',
+                            uselist=False,
+                            back_populates='user_rel',
+                            passive_deletes=True,
+                            cascade='all, delete-orphan')
 

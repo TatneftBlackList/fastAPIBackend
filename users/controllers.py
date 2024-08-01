@@ -44,3 +44,10 @@ async def partial_update_user(user_id: int, request: UsersSchemaRequestPartial,
 
     user = await service.partial_update_user(request, user_id)
     return user
+
+
+@router.delete("/users/{user_id}", summary="Удаление русурса по ID", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user(user_id: int, session: AsyncSession = Depends(get_session)):
+    service = UserService(session)
+
+    await service.delete_user(user_id)

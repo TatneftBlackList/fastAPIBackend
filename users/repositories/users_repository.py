@@ -30,3 +30,8 @@ class UsersRepository:
         await self.db.commit()
         await self.db.refresh(user)
         return user
+
+    async def delete_user(self, user: UserModel):
+        await self.db.delete(user)
+        await self.db.commit()
+

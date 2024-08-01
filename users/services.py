@@ -57,3 +57,14 @@ class UserService:
             existing_user.job_number = user.job_number
 
         return await self.user_repository.update_user(existing_user)
+
+    async def delete_user(self, user_id: int):
+        existing_user = await self.user_repository.get_user_by_id(user_id)
+
+        if existing_user is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found",
+            )
+
+        await self.user_repository.delete_user(existing_user)

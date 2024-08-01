@@ -58,3 +58,12 @@ async def partial_blocked_unit(request: BlockedUnitsSchemaPartialRequest, blocke
     service = BlockedUnitsService(session)
     updated_unit = await service.partial_update_blocked_unit(request, blocked_unit_id)
     return updated_unit
+
+
+@router.delete("/blockedUnits/{blocked_unit_id}", summary="Удаление ресурса по ID",
+               status_code=status.HTTP_204_NO_CONTENT)
+async def delete_blocked_units(blocked_unit_id: int, session: AsyncSession = Depends(get_session)):
+    service = BlockedUnitsService(session)
+
+    await service.delete_blocked_unit(blocked_unit_id)
+

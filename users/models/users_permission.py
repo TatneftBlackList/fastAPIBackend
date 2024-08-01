@@ -7,7 +7,7 @@ from db.base import Base
 class UserPermissionModel(Base):
     __tablename__ = 'user_permissions'
 
-    user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), primary_key=True)
     permission_id = Column(Integer, ForeignKey('permissions.id'), primary_key=True)
 
 

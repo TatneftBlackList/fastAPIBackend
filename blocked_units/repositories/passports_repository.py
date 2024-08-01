@@ -40,3 +40,11 @@ class PassportsRepository:
         )
         result = await self.db.execute(query)
         return result.scalar()
+
+    async def delete_passport(self, passport_id):
+        passport = await self.db.execute(select(PassportsModel).where(PassportsModel.id == passport_id))
+
+        result = passport.scalar()
+
+        await self.db.delete(result)
+        await self.db.commit()

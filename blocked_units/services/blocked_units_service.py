@@ -54,6 +54,7 @@ class BlockedUnitsService:
                 )
 
                 await self.blocked_units_repository.create_blocked_unit(new_blocked_unit)
+                await self.db.commit()
 
             except IntegrityError as e:
                 await self.db.rollback()

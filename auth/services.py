@@ -4,7 +4,7 @@ from auth.repositories import AuthRepository
 from auth.schemas import UserCreate
 from auth.models import AuthModel
 from starlette import status
-from auth.security import verify_password, get_password_hash, create_access_token
+from auth.security import verify_password, get_password_hash, create_access_token, create_refresh_token
 from users.repositories.users_repository import UsersRepository
 from users.repositories.users_permission_repository import UserPermissionRepository
 from users.models.users_permission import UserPermissionModel
@@ -32,7 +32,9 @@ class AuthService:
     async def create_access_token_service(self, user: AuthModel):
         permissions = await self.user_permission_repository.get_permissions_from_user(user)
         token_data = {"sub": user.login, "permissions": [permission.name for permission in permissions]}
-        return create_access_token(token_data)
+        access_token = create_access_token(token_data)
+        refresh_token = create_refresh_token(token_data)
+        return {"access_token": access_token, "refresh_token": refresh_token}
 
     async def create_user(self, user: UserCreate):
         login = await self.auth_repository.get_user_by_login(user.login)

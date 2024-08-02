@@ -17,6 +17,7 @@ class Settings(BaseConfig):
     JWT_SECRET_KEY: str = os.getenv('JWT_SECRET_KEY')
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE: int = 30
+    REFRESH_TOKEN_EXPIRE: int = 86400
 
 
 settings = Settings()

@@ -41,7 +41,7 @@ class AuthService:
 
         if login is not None:
             raise HTTPException(
-                status_code=status.HTTP_200_OK,
+                status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Login already registered",
             )
 
@@ -49,7 +49,7 @@ class AuthService:
 
         if existing_job_number is not None:
             raise HTTPException(
-                status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Job number already registered",
             )
 

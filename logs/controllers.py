@@ -30,3 +30,14 @@ async def get_log(log_id: int,
 
     log = await service.get_log(current_user, log_id)
     return log
+
+
+@router.get("/logs/users/{user_id}", response_model=List[LogsSchema], status_code=status.HTTP_200_OK,
+            summary="Возвращает логги по данному user_id")
+async def get_logs_for_user(user_id: int,
+                            current_user: Annotated[dict, Depends(get_current_user)],
+                            session: AsyncSession = Depends(get_session)):
+    service = UserRequestLogService(session)
+
+    logs = await service.get_logs_for_user(user_id, current_user)
+    return logs

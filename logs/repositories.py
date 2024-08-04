@@ -39,3 +39,15 @@ class UserRequestLogRepository:
             .options(joinedload(UserRequestLogModel.user).joinedload(AuthModel.user_rel))
         )
         return result.scalar()
+
+
+    async def get_logs_for_user(self, user_id: int):
+        result = await self.db.execute(
+            select(UserRequestLogModel)
+            .options(
+                joinedload(UserRequestLogModel.user)
+                .joinedload(AuthModel.user_rel)
+            )
+            .where(AuthModel.user_id == user_id)
+        )
+        return result.scalars().all()

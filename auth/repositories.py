@@ -1,5 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import joinedload
+
 from auth.models import AuthModel
 
 
@@ -8,7 +10,9 @@ class AuthRepository:
         self.db = db
 
     async def get_user_by_login(self, login: str):
-        result = await self.db.execute(select(AuthModel).where(AuthModel.login == login))
+        result = await self.db.execute(
+            select(AuthModel).options(joinedload(AuthModel.role_rel))
+            .where(AuthModel.login == login))
         return result.scalar()
 
     async def create_user(self, user):

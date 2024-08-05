@@ -5,6 +5,7 @@ from typing import Optional, List
 class Token(BaseModel):
     access_token: str
     refresh_token: str
+    role: str
 
 
 

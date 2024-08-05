@@ -34,7 +34,7 @@ class AuthService:
         token_data = {"sub": user.login, "permissions": [permission.name for permission in permissions]}
         access_token = create_access_token(token_data)
         refresh_token = create_refresh_token(token_data)
-        return {"access_token": access_token, "refresh_token": refresh_token}
+        return {"access_token": access_token, "refresh_token": refresh_token, "role": user.role_rel.name}
 
     async def create_user(self, user: UserCreate):
         login = await self.auth_repository.get_user_by_login(user.login)
